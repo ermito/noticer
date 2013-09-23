@@ -27,7 +27,4 @@
 	    android:onClick="onClickStop"
 	    android:text="@string/stop" />
 
-	   
-
-
 </RelativeLayout>

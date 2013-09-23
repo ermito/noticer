@@ -4,6 +4,6 @@
     <string name="app_name">noticer</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
-	<string name="start">Start notice service</string>
-	<string name="stop">Stop notice service</string>
+	<string name="start">Start testing</string>
+	<string name="stop">Stop testing</string>
 </resources>
