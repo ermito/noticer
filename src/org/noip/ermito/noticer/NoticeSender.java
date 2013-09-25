@@ -12,6 +12,7 @@ import android.provider.ContactsContract;
 import android.provider.ContactsContract.CommonDataKinds.Phone;
 import android.provider.ContactsContract.RawContacts.Data;
 import android.telephony.PhoneNumberUtils;
+import android.annotation.SuppressLint;
 import android.content.Context;
 
 public class NoticeSender {
@@ -45,6 +46,7 @@ public class NoticeSender {
           sock.close();
 	}
 	
+	@SuppressLint("NewApi")
 	static String NumberToName(Context context,String phoneNumber)
 	{
 		String Name=" ";
@@ -64,7 +66,15 @@ public class NoticeSender {
          					Phone.CONTENT_ITEM_TYPE + "'";
          
          String selectionArgs [] ={ phoneNumber };
-
+        /* Cursor cursor;
+         if (android.os.Build.VERSION.SDK_INT < 11) {
+             cursor = context.getContentResolver().query(ContactsContract.Data.CONTENT_URI, projection, selection, selectionArgs, null);
+         } else {
+             CursorLoader cursorLoader = new CursorLoader(context, ContactsContract.Data.CONTENT_URI, projection, selection, selectionArgs, null);
+             cursor = cursorLoader.loadInBackground();
+         }*/
+         
+         
 		Cursor cursor = context.getContentResolver().query(ContactsContract.Data.CONTENT_URI, projection, selection, selectionArgs, null);
          
          if(cursor.getCount()>0)

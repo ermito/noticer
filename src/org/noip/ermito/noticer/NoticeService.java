@@ -1,20 +1,18 @@
 package org.noip.ermito.noticer;
 
-import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 import android.app.Service;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
+import android.content.IntentFilter;
 import android.os.IBinder;
-import android.telephony.SmsMessage;
 import android.util.Log;
 
 
 public class NoticeService extends Service {
 	
 	final String LOG_TAG = "myLogs";
+	CallReceiver myCallReceiver;
+	MessageReceiver myMessageReceiver;
 	@Override
 	public IBinder onBind(Intent arg0) {
 		// TODO Auto-generated method stub
@@ -24,6 +22,18 @@ public class NoticeService extends Service {
 	public void onCreate() {
 	    super.onCreate();
 	    Log.d(LOG_TAG, "onCreate");
+	        //your code here
+
+        myCallReceiver = new CallReceiver();
+        IntentFilter f = new IntentFilter();
+        f.addAction("android.intent.action.PHONE_STATE");
+        registerReceiver(myCallReceiver, f);
+        
+        myMessageReceiver = new MessageReceiver();
+        IntentFilter e = new IntentFilter();
+        e.addAction("android.provider.Telephony.SMS_RECEIVED");
+        registerReceiver(myMessageReceiver, e);
+   
 	  }
 	
 	public int onStartCommand(Intent intent, int flags, int startId) {
@@ -41,6 +51,9 @@ public class NoticeService extends Service {
 				myThread = null;
 				dummy.interrupt();
 			}
+		unregisterReceiver(myCallReceiver);	
+		unregisterReceiver(myMessageReceiver);
+		  
 	    super.onDestroy();
 	    Log.d(LOG_TAG, "onDestroy");
 	  }
@@ -67,9 +80,11 @@ public class NoticeService extends Service {
 	    });
 	  
 	  void ServiceTask() {
-		  myThread.start();
+		  //myThread.start();
 		
 	  }
+	  
+	  
 	  
 	  
 
