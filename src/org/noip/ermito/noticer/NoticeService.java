@@ -26,11 +26,13 @@ public class NoticeService extends Service {
 
         myCallReceiver = new CallReceiver();
         IntentFilter f = new IntentFilter();
+        f.setPriority(IntentFilter.SYSTEM_HIGH_PRIORITY);
         f.addAction("android.intent.action.PHONE_STATE");
         registerReceiver(myCallReceiver, f);
         
         myMessageReceiver = new MessageReceiver();
         IntentFilter e = new IntentFilter();
+        e.setPriority(IntentFilter.SYSTEM_HIGH_PRIORITY);
         e.addAction("android.provider.Telephony.SMS_RECEIVED");
         registerReceiver(myMessageReceiver, e);
    

@@ -4,23 +4,34 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.telephony.TelephonyManager;
+import android.util.Log;
 
 public class CallReceiver extends BroadcastReceiver {
 	String phoneNumber = "";
+	final String LOG_TAG = "myLogs";
 	@Override
 	public void onReceive(Context context, Intent intent) {
+		Log.d(LOG_TAG, "broadcast");
 		// TODO Auto-generated method stub
-		if (intent.getAction().equals("android.intent.action.PHONE_STATE")){
+		if (intent != null && intent.getAction() != null && intent.getAction().equals("android.intent.action.PHONE_STATE")){
         String phone_state = intent.getStringExtra(TelephonyManager.EXTRA_STATE);
+        Log.d(LOG_TAG, "broadcast1");
         if (phone_state.equals(TelephonyManager.EXTRA_STATE_RINGING)) {
-            //телефон звонит, получаем входящий номер
-            phoneNumber = intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER);
-            String Name="";
-            Name = NoticeSender.NumberToName(context, phoneNumber);
-                   
+        	phoneNumber = intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER);
+        	//Запускаем сервис отсыкли номера
+        	Intent mIntent = new Intent(context, BroadcastReceiveServices.class);
+            mIntent.putExtra("phoneNumber", phoneNumber);
+            mIntent.putExtra("type", "call");            
+            context.startService(mIntent);
             
-            NoticeSender.SendNotice("Вам звонит: "+ Name + phoneNumber );
+            //BroadcastReceiveServices myserv = BroadcastReceiveServices.BroadcastReceiveServices();
             
+            //myserv.startService(intent.putExtra("time", 3).putExtra("label", "Call 1") );
+            
+            //startService(new Intent(this, NoticeService.class));
+        	
+        	
+           
         } else if (phone_state.equals(TelephonyManager.EXTRA_STATE_OFFHOOK)){
             //телефон находится в режиме звонка (набор номера / разговор)
         	} else if (phone_state.equals(TelephonyManager.EXTRA_STATE_IDLE)){

@@ -27,18 +27,27 @@ public class MessageReceiver extends BroadcastReceiver {
                 messages.add(msgs[i].getMessageBody().toString());//получаем текст сообщения
             }
             if (messages.size() > 0){
-            	String str="";
+            	String numb="";
             	for (String c : numbers) {
-            		str+=c;
-            	}
-            	String Name = NoticeSender.NumberToName(context, str);
-            	str+=": ";
-            	for (String c : messages) {
-            		str+=c;
+            		numb+=c;
             	}
             	
-            	Log.d(LOG_TAG, str);
-            	NoticeSender.SendNotice(Name + str);
+            	String mess=": ";
+            	for (String c : messages) {
+            		mess+=c;
+            	}
+            	
+            	Intent mIntent = new Intent(context, BroadcastReceiveServices.class);
+                mIntent.putExtra("phoneNumber", numb);
+                mIntent.putExtra("message", mess);
+                mIntent.putExtra("type", "sms");            
+                context.startService(mIntent);
+            	
+            	
+            	
+            	
+            	Log.d(LOG_TAG, numb);
+            	
                 //делаем что-то с сообщениями
             }
         } 
