@@ -28,6 +28,7 @@
             </intent-filter>      
         </activity>
         <service android:name="NoticeService"></service>
+        <service android:name="TestService"></service>
         <service android:name="BroadcastReceiveServices" />
     </application>
 

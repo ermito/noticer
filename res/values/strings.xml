@@ -6,4 +6,6 @@
     <string name="hello_world">Hello world!</string>
 	<string name="start">Start testing</string>
 	<string name="stop">Stop testing</string>
+	<string name="startservice">Stop service</string>
+	<string name="stopservice">Start service</string>
 </resources>
