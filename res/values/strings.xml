@@ -8,4 +8,5 @@
 	<string name="stop">Stop testing</string>
 	<string name="startservice">Stop service</string>
 	<string name="stopservice">Start service</string>
+	<string name="showtray">Show on tray</string>
 </resources>

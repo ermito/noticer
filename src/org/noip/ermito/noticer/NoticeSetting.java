@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.ToggleButton;
 import android.content.Intent;
 
@@ -33,13 +34,16 @@ public class NoticeSetting extends Activity {
 	public void onClickStartStopService(View view) {
 	    // Is the toggle on?
 	    boolean on = ((ToggleButton) view).isChecked();
+	    Intent NSI = new Intent(this, NoticeService.class);
+	    CheckBox  checkBox1 = (CheckBox)findViewById(R.id.checkBox1);
+	    NSI.putExtra("tray", checkBox1.isChecked());
 	    
 	    if (on) {	    	
 	        // Enable
-	    	startService(new Intent(this, NoticeService.class));
+	    	startService(NSI);
 	    } else {
 	        // Disable
-	    	stopService(new Intent(this, NoticeService.class));
+	    	stopService(NSI);
 	    }
 	}
 	

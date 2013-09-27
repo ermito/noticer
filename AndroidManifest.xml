@@ -20,7 +20,9 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name="org.noip.ermito.noticer.NoticeSetting"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:launchMode="singleInstance"
+             >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

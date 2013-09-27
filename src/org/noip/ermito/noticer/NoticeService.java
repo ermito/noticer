@@ -1,6 +1,10 @@
 package org.noip.ermito.noticer;
 
 import java.util.concurrent.TimeUnit;
+
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -11,6 +15,7 @@ import android.util.Log;
 public class NoticeService extends Service {
 	
 	final String LOG_TAG = "myLogs";
+	NotificationManager nm;
 	CallReceiver myCallReceiver;
 	MessageReceiver myMessageReceiver;
 	@Override
@@ -35,56 +40,48 @@ public class NoticeService extends Service {
         e.setPriority(IntentFilter.SYSTEM_HIGH_PRIORITY);
         e.addAction("android.provider.Telephony.SMS_RECEIVED");
         registerReceiver(myMessageReceiver, e);
+        
+        nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
    
 	  }
 	
 	public int onStartCommand(Intent intent, int flags, int startId) {
-		if (startId==1)
-		{
-			Log.d(LOG_TAG, "onStartCommand");
-			ServiceTask();
-		}
-	    return super.onStartCommand(intent, flags, startId);
+		if(intent.getBooleanExtra("tray", true))
+			sendNotif();
+		return super.onStartCommand(intent, flags, startId);
 	  }
 
 	  public void onDestroy() {
-		  if (myThread != null) {
-			    Thread dummy = myThread;
-				myThread = null;
-				dummy.interrupt();
-			}
+		
 		unregisterReceiver(myCallReceiver);	
 		unregisterReceiver(myMessageReceiver);
 		  
+		nm.cancel(1);
 	    super.onDestroy();
 	    Log.d(LOG_TAG, "onDestroy");
 	  }
 	  
-	  Thread myThread = new Thread(new Runnable() {
-	      public void run() {
-	    	 for (int i = 1; i<=50; i++) {
-	          Log.d(LOG_TAG, "i = " + i);
-	          try {
-	            TimeUnit.SECONDS.sleep(1);
-	            NoticeSender.SendNotice("i="+i);
-	            
-	            
-	          } catch (InterruptedException e) {
-	            e.printStackTrace();
-	            stopSelf();
-	            return;
-	          }
-	          
-	          if(myThread==null || myThread.isInterrupted()) {stopSelf();  return; }
-	        }
-	        stopSelf();
-	      }
-	    });
+	
 	  
-	  void ServiceTask() {
-		  //myThread.start();
-		
-	  }
+	  void sendNotif() {
+		    // 1-я часть
+		    Notification notif = new Notification(R.drawable.ic_launcher, "Notice service started",	System.currentTimeMillis());
+		    
+		  	   
+		    // 3-я часть
+		    Intent intent = new Intent(this, NoticeSetting.class);
+		    //intent.putExtra(MainActivity.FILE_NAME, "somefile");
+		    PendingIntent pIntent = PendingIntent.getActivity(this, 0, intent, 0);
+		   
+		    // 2-я часть
+		    notif.setLatestEventInfo(this, "Notice service enabled", "For stopped it click me", pIntent);
+		   
+		    // ставим флаг, чтобы уведомление пропало в постоянную секцию
+		    notif.flags |= Notification.FLAG_ONGOING_EVENT ;
+		   
+		    // отправляем
+		    nm.notify(1, notif);
+		  }
 	  
 	  
 	  
