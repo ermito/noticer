@@ -13,9 +13,37 @@ import android.provider.ContactsContract.CommonDataKinds.Phone;
 import android.provider.ContactsContract.RawContacts.Data;
 import android.telephony.PhoneNumberUtils;
 import android.annotation.SuppressLint;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 
 public class NoticeSender {
+	
+	static NotificationManager nm;
+	
+	  static void sendNotif(Context contex) {
+		    // 1-я часть
+		    Notification notif = new Notification(R.drawable.ic_launcher, "Notice service started",	System.currentTimeMillis());
+		    
+		  	   
+		    // 3-я часть
+		    Intent intent = new Intent(contex, NoticeSetting.class);
+		    //intent.putExtra(MainActivity.FILE_NAME, "somefile");
+		    PendingIntent pIntent = PendingIntent.getActivity(contex, 0, intent, 0);
+		   
+		    // 2-я часть
+		    notif.setLatestEventInfo(contex, "Notice service enabled", "For stopped it click me", pIntent);
+		   
+		    // ставим флаг, чтобы уведомление пропало в постоянную секцию
+		    notif.flags |= Notification.FLAG_ONGOING_EVENT ;
+		   
+		    // отправляем
+		    nm.notify(1, notif);
+		  }
+	
+	
 	static void SendNotice (String mess)
 	{
 		InetAddress serv_addr = null;

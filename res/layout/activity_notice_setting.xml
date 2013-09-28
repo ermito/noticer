@@ -49,6 +49,7 @@
 	    android:layout_marginLeft="14dp"
 	    android:layout_marginTop="14dp"
 	    android:checked="true"
-	    android:text="@string/showtray" />
+	    android:text="@string/showtray" 
+	    android:onClick="onClickChekShowTray"   />
 
 </RelativeLayout>
