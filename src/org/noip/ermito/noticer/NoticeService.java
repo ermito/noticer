@@ -13,10 +13,12 @@ import android.os.IBinder;
 import android.util.Log;
 
 
+
 public class NoticeService extends Service {
 	
 	final String LOG_TAG = "myLogs";
-	
+	private boolean isRunning=false;
+	private static int NOTIFICATION_ID = 8987;
 	CallReceiver myCallReceiver;
 	MessageReceiver myMessageReceiver;
 	@Override
@@ -42,22 +44,36 @@ public class NoticeService extends Service {
         e.addAction("android.provider.Telephony.SMS_RECEIVED");
         registerReceiver(myMessageReceiver, e);
         
-        NoticeSender.nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        
    
 	  }
 	
 	public int onStartCommand(Intent intent, int flags, int startId) {
-		if(intent.getBooleanExtra("tray", true))
-			NoticeSender.sendNotif(this);
+		if(!isRunning)
+		{
+			Notification notif = new Notification(R.drawable.ic_launcher, "Notice service started",	System.currentTimeMillis());  	   
+		    // 3-я часть
+		    Intent intent1 = new Intent(this, NoticeSetting.class);
+		    //intent.putExtra(MainActivity.FILE_NAME, "somefile");
+		    PendingIntent pIntent = PendingIntent.getActivity(this, 0, intent1, 0);		   
+		    // 2-я часть
+		    notif.setLatestEventInfo(this, "Notice service enabled", "For stopped it click me", pIntent);		   
+		    // ставим флаг, чтобы уведомление пропало в постоянную секцию
+		    notif.flags |= Notification.FLAG_ONGOING_EVENT ;	
+			//NoticeSender.sendNotif(this);
+			startForeground(NOTIFICATION_ID,  notif );
+			isRunning=true;
+		}
 		return super.onStartCommand(intent, flags, startId);
 	  }
 
 	  public void onDestroy() {
-		
-		unregisterReceiver(myCallReceiver);	
-		unregisterReceiver(myMessageReceiver);
-		  
-		NoticeSender.nm.cancel(1);
+	  if (isRunning) {
+		  unregisterReceiver(myCallReceiver);	
+		  unregisterReceiver(myMessageReceiver);  	      
+	      isRunning=false;
+	      stopForeground(true);
+	    }		
 	    super.onDestroy();
 	    Log.d(LOG_TAG, "onDestroy");
 	  }

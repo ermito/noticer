@@ -40,16 +40,6 @@
 	    android:onClick="onClickStop"
 	    android:text="@string/stop" />
 
-	<CheckBox
-	    android:id="@+id/checkBox1"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:layout_alignLeft="@+id/btnStart"
-	    android:layout_below="@+id/btnStart"
-	    android:layout_marginLeft="14dp"
-	    android:layout_marginTop="14dp"
-	    android:checked="true"
-	    android:text="@string/showtray" 
-	    android:onClick="onClickChekShowTray"   />
+	
 
 </RelativeLayout>
