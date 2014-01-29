@@ -27,7 +27,19 @@ public class NoticeSetting extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_notice_setting);		
+		setContentView(R.layout.activity_notice_setting);	
+		
+		//проверим, запущен ли наш сервис
+		Boolean already = false;
+		ActivityManager am = (ActivityManager)this.getSystemService(ACTIVITY_SERVICE);
+		List<ActivityManager.RunningServiceInfo> rs = am.getRunningServices(50);
+		for (int i=0; i<rs.size() && !already; i++)
+		{
+			ActivityManager.RunningServiceInfo rsi = rs.get(i);
+			already=rsi.service.getClassName().contentEquals("org.noip.ermito.noticer.NoticeService");			
+		}
+		View view = findViewById(R.id.toggleButton1);
+		((ToggleButton) view).setChecked(already);				
 	}
 	
 	
@@ -45,7 +57,7 @@ public class NoticeSetting extends Activity {
 	        
 	    if (on) {	    	
 	        // Enable	    	
-	    	startService(NSI);
+	    	startService(NSI);	    		    	
 	    } else {
 	        // Disable
 	    	stopService(NSI);
