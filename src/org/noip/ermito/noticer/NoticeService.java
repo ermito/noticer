@@ -9,6 +9,7 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.os.IBinder;
 import android.util.Log;
 
@@ -19,8 +20,8 @@ public class NoticeService extends Service {
 	final String LOG_TAG = "myLogs";
 	private boolean isRunning=false;
 	private static int NOTIFICATION_ID = 8987;
-	CallReceiver myCallReceiver;
-	MessageReceiver myMessageReceiver;
+	CallReceiver myCallReceiver=null;
+	MessageReceiver myMessageReceiver=null;
 	@Override
 	public IBinder onBind(Intent arg0) {
 		// TODO Auto-generated method stub
@@ -31,18 +32,28 @@ public class NoticeService extends Service {
 	    super.onCreate();
 	    Log.d(LOG_TAG, "onCreate");
 	        //your code here
-
-        myCallReceiver = new CallReceiver();
-        IntentFilter f = new IntentFilter();
-        f.setPriority(IntentFilter.SYSTEM_HIGH_PRIORITY);
-        f.addAction("android.intent.action.PHONE_STATE");
-        registerReceiver(myCallReceiver, f);
+	    
+	    SharedPreferences mSettings = 
+	    		getSharedPreferences("NoticerSetting", MODE_PRIVATE);
+		
+			
+		if(mSettings.getBoolean("confcall", true))
+		{
+	        myCallReceiver = new CallReceiver();
+	        IntentFilter f = new IntentFilter();
+	        f.setPriority(IntentFilter.SYSTEM_HIGH_PRIORITY);
+	        f.addAction("android.intent.action.PHONE_STATE");
+	        registerReceiver(myCallReceiver, f);
+		}
         
-        myMessageReceiver = new MessageReceiver();
-        IntentFilter e = new IntentFilter();
-        e.setPriority(IntentFilter.SYSTEM_HIGH_PRIORITY);
-        e.addAction("android.provider.Telephony.SMS_RECEIVED");
-        registerReceiver(myMessageReceiver, e);
+        if(mSettings.getBoolean("confsms", true))
+        {
+	        myMessageReceiver = new MessageReceiver();
+	        IntentFilter e = new IntentFilter();
+	        e.setPriority(IntentFilter.SYSTEM_HIGH_PRIORITY);
+	        e.addAction("android.provider.Telephony.SMS_RECEIVED");
+	        registerReceiver(myMessageReceiver, e);
+        }
         
         
    
@@ -69,8 +80,10 @@ public class NoticeService extends Service {
 
 	  public void onDestroy() {
 	  if (isRunning) {
-		  unregisterReceiver(myCallReceiver);	
-		  unregisterReceiver(myMessageReceiver);  	      
+		  if(myCallReceiver!=null)
+			  unregisterReceiver(myCallReceiver);
+		  if(myMessageReceiver!=null)
+			  unregisterReceiver(myMessageReceiver);  	      
 	      isRunning=false;
 	      stopForeground(true);
 	    }		

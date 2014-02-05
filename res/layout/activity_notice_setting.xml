@@ -40,6 +40,34 @@
 	    android:onClick="onClickStop"
 	    android:text="@string/stop" />
 
+	<CheckBox
+	    android:id="@+id/autoboot"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_alignLeft="@+id/btnStart"
+	    android:layout_below="@+id/btnStart"
+	    android:layout_marginTop="24dp"
+	    android:onClick="onClickConfigAutoBoot"
+	    android:text="@string/autoboot" />
 	
+	<CheckBox
+	    android:id="@+id/confsms"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_alignLeft="@+id/autoboot"
+	    android:layout_below="@+id/autoboot"
+	    android:layout_marginTop="24dp"
+	    android:onClick="onClickConfigSms"
+	    android:text="@string/confsms" />
+	
+	<CheckBox
+	    android:id="@+id/confcall"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_alignLeft="@+id/confsms"
+	    android:layout_below="@+id/confsms"
+	    android:layout_marginTop="24dp"
+	    android:onClick="onClickConfigCall"
+	    android:text="@string/confcall" />
 
 </RelativeLayout>

@@ -22,7 +22,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         
-        <receiver android:name=".BootBroadReceiv" android:enabled="true" android:exported="false" >
+       <receiver android:name=".BootBroadReceiv" android:enabled="true" android:exported="false" >
 		<intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
 		</intent-filter>
