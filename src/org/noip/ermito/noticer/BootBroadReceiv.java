@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
 
-
 public class BootBroadReceiv extends BroadcastReceiver {
 
 	  final String LOG_TAG = "myLogs";

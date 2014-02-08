@@ -54,7 +54,7 @@ public class NoticeSender {
 	@SuppressLint("NewApi")
 	static String NumberToName(Context context,String phoneNumber)
 	{
-		String Name=" ";
+		 String Name=" ";
 		 phoneNumber = PhoneNumberUtils.stripSeparators(phoneNumber);
          
          String[] projection = new String[]
@@ -71,25 +71,17 @@ public class NoticeSender {
          					Phone.CONTENT_ITEM_TYPE + "'";
          
          String selectionArgs [] ={ phoneNumber };
-        /* Cursor cursor;
-         if (android.os.Build.VERSION.SDK_INT < 11) {
-             cursor = context.getContentResolver().query(ContactsContract.Data.CONTENT_URI, projection, selection, selectionArgs, null);
-         } else {
-             CursorLoader cursorLoader = new CursorLoader(context, ContactsContract.Data.CONTENT_URI, projection, selection, selectionArgs, null);
-             cursor = cursorLoader.loadInBackground();
-         }*/
+                
          
-         
-		Cursor cursor = context.getContentResolver().query(ContactsContract.Data.CONTENT_URI, projection, selection, selectionArgs, null);
+		 Cursor cursor = context.getContentResolver().query(ContactsContract.Data.CONTENT_URI, projection, selection, selectionArgs, null);
          
          if(cursor.getCount()>0)
          {
          	cursor.moveToFirst();
          	Name = cursor.getString(2) + " ";
          }		
-         else Name = "Unknow";
-		
-		return Name;
+         else Name = "Unknow";		
+         return Name;
 	}
 	
 	

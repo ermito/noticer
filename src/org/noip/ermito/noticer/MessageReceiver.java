@@ -25,7 +25,7 @@ public class MessageReceiver extends BroadcastReceiver {
                 msgs[i] = SmsMessage.createFromPdu((byte[])pdus[i]);
                 numbers.add(msgs[i].getOriginatingAddress()); //получаем номер отправителя
                 messages.add(msgs[i].getMessageBody().toString());//получаем текст сообщения
-            }
+            }	
             if (messages.size() > 0){
             	String numb="";
             	for (String c : numbers) {
@@ -42,13 +42,9 @@ public class MessageReceiver extends BroadcastReceiver {
                 mIntent.putExtra("message", mess);
                 mIntent.putExtra("type", "sms");            
                 context.startService(mIntent);
-            	
-            	
-            	
-            	
+       	
             	Log.d(LOG_TAG, numb);
             	
-                //делаем что-то с сообщениями
             }
         } 
 

@@ -18,20 +18,11 @@ public class CallReceiver extends BroadcastReceiver {
         Log.d(LOG_TAG, "broadcast1");
         if (phone_state.equals(TelephonyManager.EXTRA_STATE_RINGING)) {
         	phoneNumber = intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER);
-        	//Запускаем сервис отсыкли номера
+        	//Запускаем сервис отсылки номера
         	Intent mIntent = new Intent(context, BroadcastReceiveServices.class);
             mIntent.putExtra("phoneNumber", phoneNumber);
             mIntent.putExtra("type", "call");            
-            context.startService(mIntent);
-            
-            //BroadcastReceiveServices myserv = BroadcastReceiveServices.BroadcastReceiveServices();
-            
-            //myserv.startService(intent.putExtra("time", 3).putExtra("label", "Call 1") );
-            
-            //startService(new Intent(this, NoticeService.class));
-        	
-        	
-           
+            context.startService(mIntent);   
         } else if (phone_state.equals(TelephonyManager.EXTRA_STATE_OFFHOOK)){
             //телефон находится в режиме звонка (набор номера / разговор)
         	} else if (phone_state.equals(TelephonyManager.EXTRA_STATE_IDLE)){
